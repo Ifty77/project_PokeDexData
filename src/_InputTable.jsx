@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const InputTable = () => {
+const _InputTable = () => {
   const [inputs, setInputs] = useState({
     pokemon: '',
     type: {
