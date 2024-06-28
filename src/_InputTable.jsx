@@ -20,7 +20,16 @@ const InputTable = () => {
     weight: ''
   });
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(() => {
+    
+    const savedData = localStorage.getItem('pokemonData');
+    return savedData ? JSON.parse(savedData) : [];
+  });
+
+  useEffect(() => {
+   
+    localStorage.setItem('pokemonData', JSON.stringify(data));
+  }, [data]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
