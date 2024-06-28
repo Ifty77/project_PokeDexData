@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const _InputTable = () => {
+const InputTable = () => {
   const [inputs, setInputs] = useState({
     pokemon: '',
     type: {
@@ -137,5 +137,4 @@ const _InputTable = () => {
     </div>
   );
 };
-
 export default _InputTable;
