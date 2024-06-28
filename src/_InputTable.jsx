@@ -1,38 +1,65 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
 
-const InputTable = () => {
+const _InputTable = () => {
   const [inputs, setInputs] = useState({
-    name: '',
-    class: '',
-    roll: '',
-    gender: '',
-    bloodGroup: '',
-    nationality: '',
-    religion: ''
+    pokemon: '',
+    type: {
+      Fire: false,
+      Water: false,
+      Grass: false,
+      Electric: false,
+      Ice: false,
+      Flying: false,
+      Psychic: false,
+      Ghost: false,
+      Fighting: false,
+      Poison: false
+    },
+    number: '',
+    height: '',
+    weight: ''
   });
 
   const [data, setData] = useState([]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs((prevInputs) => ({
-      ...prevInputs,
-      [name]: value
-    }));
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setInputs((prevInputs) => ({
+        ...prevInputs,
+        type: {
+          ...prevInputs.type,
+          [name]: checked
+        }
+      }));
+    } else {
+      setInputs((prevInputs) => ({
+        ...prevInputs,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setData((prevData) => [...prevData, inputs]);
     setInputs({
-      name: '',
-      class: '',
-      roll: '',
-      gender: '',
-      bloodGroup: '',
-      nationality: '',
-      religion: ''
+      pokemon: '',
+      type: {
+        Fire: false,
+        Water: false,
+        Grass: false,
+        Electric: false,
+        Ice: false,
+        Flying: false,
+        Psychic: false,
+        Ghost: false,
+        Fighting: false,
+        Poison: false
+      },
+      number: '',
+      height: '',
+      weight: ''
     });
   };
 
@@ -41,157 +68,68 @@ const InputTable = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
-          placeholder="Name"
-          value={inputs.name}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="class"
-          placeholder="Class"
-          value={inputs.class}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="roll"
-          placeholder="Roll"
-          value={inputs.roll}
+          name="pokemon"
+          placeholder="Pokemon"
+          value={inputs.pokemon}
           onChange={handleChange}
         />
         
         <div>
-          <label>Gender:</label>
-          <input
-            type="radio"
-            name="gender"
-            value="Male"
-            checked={inputs.gender === 'Male'}
-            onChange={handleChange}
-          /> Male
-          <input
-            type="radio"
-            name="gender"
-            value="Female"
-            checked={inputs.gender === 'Female'}
-            onChange={handleChange}
-          /> Female
+          <label>Type:</label>
+          {['Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Flying', 'Psychic', 'Ghost', 'Fighting', 'Poison'].map((type) => (
+            <label key={type}>
+              <input
+                type="checkbox"
+                name={type}
+                checked={inputs.type[type]}
+                onChange={handleChange}
+              /> {type}
+            </label>
+          ))}
         </div>
 
-        <div>
-          <label>Blood Group:</label>
-          <input
-            type="radio"
-            name="bloodGroup"
-            value="A"
-            checked={inputs.bloodGroup === 'A'}
-            onChange={handleChange}
-          /> A
-          <input
-            type="radio"
-            name="bloodGroup"
-            value="B"
-            checked={inputs.bloodGroup === 'B'}
-            onChange={handleChange}
-          /> B
-          <input
-            type="radio"
-            name="bloodGroup"
-            value="AB"
-            checked={inputs.bloodGroup === 'AB'}
-            onChange={handleChange}
-          /> AB
-          <input
-            type="radio"
-            name="bloodGroup"
-            value="O"
-            checked={inputs.bloodGroup === 'O'}
-            onChange={handleChange}
-          /> O
-        </div>
-
-        <div>
-          <label>Nationality:</label>
-          <input
-            type="radio"
-            name="nationality"
-            value="American"
-            checked={inputs.nationality === 'American'}
-            onChange={handleChange}
-          /> American
-          <input
-            type="radio"
-            name="nationality"
-            value="Canadian"
-            checked={inputs.nationality === 'Canadian'}
-            onChange={handleChange}
-          /> Canadian
-          <input
-            type="radio"
-            name="nationality"
-            value="Other"
-            checked={inputs.nationality === 'Other'}
-            onChange={handleChange}
-          /> Other
-        </div>
-
-        <div>
-          <label>Religion:</label>
-          <input
-            type="radio"
-            name="religion"
-            value="Christianity"
-            checked={inputs.religion === 'Christianity'}
-            onChange={handleChange}
-          /> Christianity
-          <input
-            type="radio"
-            name="religion"
-            value="Islam"
-            checked={inputs.religion === 'Islam'}
-            onChange={handleChange}
-          /> Islam
-          <input
-            type="radio"
-            name="religion"
-            value="Hinduism"
-            checked={inputs.religion === 'Hinduism'}
-            onChange={handleChange}
-          /> Hinduism
-          <input
-            type="radio"
-            name="religion"
-            value="Other"
-            checked={inputs.religion === 'Other'}
-            onChange={handleChange}
-          /> Other
-        </div>
+        <input
+          type="text"
+          name="number"
+          placeholder="Number"
+          value={inputs.number}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="height"
+          placeholder="Height"
+          value={inputs.height}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="weight"
+          placeholder="Weight"
+          value={inputs.weight}
+          onChange={handleChange}
+        />
 
         <button type="submit">Submit</button>
       </form>
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Roll</th>
-            <th>Gender</th>
-            <th>Blood Group</th>
-            <th>Nationality</th>
-            <th>Religion</th>
+            <th>Pokemon</th>
+            <th>Type</th>
+            <th>Number</th>
+            <th>Height</th>
+            <th>Weight</th>
           </tr>
         </thead>
         <tbody>
           {data.map((entry, index) => (
             <tr key={index}>
-              <td>{entry.name}</td>
-              <td>{entry.class}</td>
-              <td>{entry.roll}</td>
-              <td>{entry.gender}</td>
-              <td>{entry.bloodGroup}</td>
-              <td>{entry.nationality}</td>
-              <td>{entry.religion}</td>
+              <td>{entry.pokemon}</td>
+              <td>{Object.keys(entry.type).filter(type => entry.type[type]).join(', ')}</td>
+              <td>{entry.number}</td>
+              <td>{entry.height}</td>
+              <td>{entry.weight}</td>
             </tr>
           ))}
         </tbody>
@@ -200,5 +138,4 @@ const InputTable = () => {
   );
 };
 
-export default InputTable;
-
+export default _InputTable;
