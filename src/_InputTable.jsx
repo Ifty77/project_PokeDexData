@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const _InputTable = () => {
+const InputTable = () => {
   const [inputs, setInputs] = useState({
     pokemon: '',
     type: {
@@ -20,7 +20,16 @@ const _InputTable = () => {
     weight: ''
   });
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(() => {
+    
+    const savedData = localStorage.getItem('pokemonData');
+    return savedData ? JSON.parse(savedData) : [];
+  });
+
+  useEffect(() => {
+   
+    localStorage.setItem('pokemonData', JSON.stringify(data));
+  }, [data]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -137,5 +146,4 @@ const _InputTable = () => {
     </div>
   );
 };
-
 export default _InputTable;
