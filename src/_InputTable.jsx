@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './_InputTable.css';
 
 const _InputTable = () => {
   const [inputs, setInputs] = useState({
@@ -26,6 +27,7 @@ const _InputTable = () => {
   });
 
   const [editIndex, setEditIndex] = useState(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     localStorage.setItem('pokemonData', JSON.stringify(data));
@@ -88,91 +90,135 @@ const _InputTable = () => {
     setData((prevData) => prevData.filter((_, i) => i !== index));
   };
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const filteredData = data.filter((entry) => {
+    const searchTerm = search.toLowerCase();
+    const types = Object.keys(entry.type)
+      .filter((type) => entry.type[type])
+      .join(', ')
+      .toLowerCase();
+    return (
+      entry.pokemon.toLowerCase().includes(searchTerm) ||
+      types.includes(searchTerm) ||
+      entry.number.includes(searchTerm)
+    );
+  });
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="pokemon"
-          placeholder="Pokemon"
-          value={inputs.pokemon}
-          onChange={handleChange}
-        />
-        <div>
-          <label>Type:</label>
-          {[
-            'Fire',
-            'Water',
-            'Grass',
-            'Electric',
-            'Ice',
-            'Flying',
-            'Psychic',
-            'Ghost',
-            'Fighting',
-            'Poison'
-          ].map((type) => (
-            <label key={type}>
-              <input
-                type="checkbox"
-                name={type}
-                checked={inputs.type[type]}
-                onChange={handleChange}
-              />{' '}
-              {type}
-            </label>
-          ))}
+    <div className="container">
+      <input
+        type="text"
+        className="search-bar"
+        placeholder="Search by name, type, or number"
+        value={search}
+        onChange={handleSearchChange}
+      />
+      <form onSubmit={handleSubmit} className="form-container">
+        <div className="form-row">
+          <input
+            type="text"
+            name="pokemon"
+            className="form-control"
+            placeholder="Pokemon"
+            value={inputs.pokemon}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="number"
+            className="form-control"
+            placeholder="Number"
+            value={inputs.number}
+            onChange={handleChange}
+          />
         </div>
-        <input
-          type="text"
-          name="number"
-          placeholder="Number"
-          value={inputs.number}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="height"
-          placeholder="Height"
-          value={inputs.height}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="weight"
-          placeholder="Weight"
-          value={inputs.weight}
-          onChange={handleChange}
-        />
-        <button type="submit">{editIndex !== null ? 'Update' : 'Submit'}</button>
+        <div className="form-row">
+          <input
+            type="text"
+            name="height"
+            className="form-control"
+            placeholder="Height"
+            value={inputs.height}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="weight"
+            className="form-control"
+            placeholder="Weight"
+            value={inputs.weight}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="checkbox-container">
+          <label>Type:</label>
+          <div>
+            {[
+              'Fire',
+              'Water',
+              'Grass',
+              'Electric',
+              'Ice',
+              'Flying',
+              'Psychic',
+              'Ghost',
+              'Fighting',
+              'Poison'
+            ].map((type) => (
+              <label key={type}>
+                <input
+                  type="checkbox"
+                  name={type}
+                  checked={inputs.type[type]}
+                  onChange={handleChange}
+                />{' '}
+                {type}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="button-container">
+          <button type="submit" className={editIndex !== null ? 'update' : 'submit'}>
+            {editIndex !== null ? 'Update' : 'Submit'}
+          </button>
+        </div>
       </form>
-      <table>
-        <thead>
-          <tr>
-            <th>Pokemon</th>
-            <th>Type</th>
-            <th>Number</th>
-            <th>Height</th>
-            <th>Weight</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((entry, index) => (
-            <tr key={index}>
-              <td>{entry.pokemon}</td>
-              <td>{Object.keys(entry.type).filter((type) => entry.type[type]).join(', ')}</td>
-              <td>{entry.number}</td>
-              <td>{entry.height}</td>
-              <td>{entry.weight}</td>
-              <td>
-                <button onClick={() => handleEdit(index)}>Edit</button>
-                <button onClick={() => handleDelete(index)}>Delete</button>
-              </td>
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Pokemon</th>
+              <th>Type</th>
+              <th>Number</th>
+              <th>Height</th>
+              <th>Weight</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredData.map((entry, index) => (
+              <tr key={index}>
+                <td>{entry.pokemon}</td>
+                <td>{Object.keys(entry.type).filter((type) => entry.type[type]).join(', ')}</td>
+                <td>{entry.number}</td>
+                <td>{entry.height}</td>
+                <td>{entry.weight}</td>
+                <td className="actions">
+                  <button className="btn btn-secondary btn-sm" onClick={() => handleEdit(index)}>
+                    Edit
+                  </button>
+                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(index)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
