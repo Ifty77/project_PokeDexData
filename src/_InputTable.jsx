@@ -26,6 +26,7 @@ const _InputTable = () => {
   });
 
   const [editIndex, setEditIndex] = useState(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     localStorage.setItem('pokemonData', JSON.stringify(data));
@@ -88,8 +89,31 @@ const _InputTable = () => {
     setData((prevData) => prevData.filter((_, i) => i !== index));
   };
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const filteredData = data.filter((entry) => {
+    const searchTerm = search.toLowerCase();
+    const types = Object.keys(entry.type)
+      .filter((type) => entry.type[type])
+      .join(', ')
+      .toLowerCase();
+    return (
+      entry.pokemon.toLowerCase().includes(searchTerm) ||
+      types.includes(searchTerm) ||
+      entry.number.includes(searchTerm)
+    );
+  });
+
   return (
     <div>
+      <input
+        type="text"
+        placeholder="Search by name, type, or number"
+        value={search}
+        onChange={handleSearchChange}
+      />
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -158,7 +182,7 @@ const _InputTable = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((entry, index) => (
+          {filteredData.map((entry, index) => (
             <tr key={index}>
               <td>{entry.pokemon}</td>
               <td>{Object.keys(entry.type).filter((type) => entry.type[type]).join(', ')}</td>
