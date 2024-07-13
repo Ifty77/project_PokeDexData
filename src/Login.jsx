@@ -11,7 +11,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login', { email, password });
+      const response = await axios.post('http://localhost:3000', { email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         history.push('/input-table');
@@ -49,3 +49,5 @@ const Login = () => {
 };
 
 export default Login;
+
+
