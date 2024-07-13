@@ -12,8 +12,8 @@ const Signup = () => {
     e.preventDefault();
     try 
    {
-      await axios.post('http://localhost:3000', { email, password });
-      history.push('/login');
+      await axios.post('http://localhost:3000/signup', { email, password });
+      history.push('/input-table');
     }catch (error) {
       alert('Signup failed');
     }
