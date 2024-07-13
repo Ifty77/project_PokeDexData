@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './_InputTable.css';
+import { useHistory } from 'react-router-dom';
 
 const _InputTable = () => {
   const [inputs, setInputs] = useState({
@@ -28,10 +29,15 @@ const _InputTable = () => {
 
   const [editIndex, setEditIndex] = useState(null);
   const [search, setSearch] = useState('');
+  const history = useHistory();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      history.push('/login');
+    }
     localStorage.setItem('pokemonData', JSON.stringify(data));
-  }, [data]);
+  }, [data, history]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
