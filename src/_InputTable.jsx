@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './_InputTable.css';
-import { useHistory } from 'react-router-dom';
 
 const _InputTable = () => {
   const [inputs, setInputs] = useState({
@@ -23,21 +22,16 @@ const _InputTable = () => {
   });
 
   const [data, setData] = useState(() => {
-    const savedData = localStorage.getItem('pokemonData');
+    const savedData = localStorage.getItem('pokemonAppData');
     return savedData ? JSON.parse(savedData) : [];
   });
 
   const [editIndex, setEditIndex] = useState(null);
   const [search, setSearch] = useState('');
-  const history = useHistory();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      history.push('/login');
-    }
-    localStorage.setItem('pokemonData', JSON.stringify(data));
-  }, [data, history]);
+    localStorage.setItem('pokemonAppData', JSON.stringify(data));
+  }, [data]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -59,6 +53,10 @@ const _InputTable = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!inputs.pokemon || !inputs.number || !inputs.height || !inputs.weight) {
+      alert("Please fill out all fields.");
+      return;
+    }
     if (editIndex !== null) {
       setData((prevData) =>
         prevData.map((item, index) => (index === editIndex ? inputs : item))
@@ -113,6 +111,11 @@ const _InputTable = () => {
     );
   });
 
+  const types = [
+    'Fire', 'Water', 'Grass', 'Electric', 'Ice',
+    'Flying', 'Psychic', 'Ghost', 'Fighting', 'Poison'
+  ];
+
   return (
     <div className="container">
       <input
@@ -162,18 +165,7 @@ const _InputTable = () => {
         <div className="checkbox-container">
           <label>Type:</label>
           <div>
-            {[
-              'Fire',
-              'Water',
-              'Grass',
-              'Electric',
-              'Ice',
-              'Flying',
-              'Psychic',
-              'Ghost',
-              'Fighting',
-              'Poison'
-            ].map((type) => (
+            {types.map((type) => (
               <label key={type}>
                 <input
                   type="checkbox"
