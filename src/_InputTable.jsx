@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './_InputTable.css';
 
-const _InputTable = () => {
+
+const _InputTable = ({ showLogin, setShowLogin }) => {
   const [inputs, setInputs] = useState({
     pokemon: '',
     type: {
@@ -22,7 +23,7 @@ const _InputTable = () => {
   });
 
   const [data, setData] = useState(() => {
-    const savedData = localStorage.getItem('pokemonAppData');
+    const savedData = localStorage.getItem('pokemonData');
     return savedData ? JSON.parse(savedData) : [];
   });
 
@@ -30,7 +31,7 @@ const _InputTable = () => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('pokemonAppData', JSON.stringify(data));
+    localStorage.setItem('pokemonData', JSON.stringify(data));
   }, [data]);
 
   const handleChange = (e) => {
@@ -53,10 +54,6 @@ const _InputTable = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!inputs.pokemon || !inputs.number || !inputs.height || !inputs.weight) {
-      alert("Please fill out all fields.");
-      return;
-    }
     if (editIndex !== null) {
       setData((prevData) =>
         prevData.map((item, index) => (index === editIndex ? inputs : item))
@@ -111,13 +108,9 @@ const _InputTable = () => {
     );
   });
 
-  const types = [
-    'Fire', 'Water', 'Grass', 'Electric', 'Ice',
-    'Flying', 'Psychic', 'Ghost', 'Fighting', 'Poison'
-  ];
-
   return (
     <div className="container">
+      {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
       <input
         type="text"
         className="search-bar"
@@ -165,7 +158,18 @@ const _InputTable = () => {
         <div className="checkbox-container">
           <label>Type:</label>
           <div>
-            {types.map((type) => (
+            {[
+              'Fire',
+              'Water',
+              'Grass',
+              'Electric',
+              'Ice',
+              'Flying',
+              'Psychic',
+              'Ghost',
+              'Fighting',
+              'Poison'
+            ].map((type) => (
               <label key={type}>
                 <input
                   type="checkbox"
