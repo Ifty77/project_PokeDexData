@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './_InputTable.css';
 
-
-const _InputTable = ({ showLogin, setShowLogin }) => {
+const _InputTable = () => {
   const [inputs, setInputs] = useState({
     pokemon: '',
     type: {
@@ -23,7 +22,7 @@ const _InputTable = ({ showLogin, setShowLogin }) => {
   });
 
   const [data, setData] = useState(() => {
-    const savedData = localStorage.getItem('pokemonData');
+    const savedData = localStorage.getItem('pokemonAppData');
     return savedData ? JSON.parse(savedData) : [];
   });
 
@@ -31,7 +30,7 @@ const _InputTable = ({ showLogin, setShowLogin }) => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('pokemonData', JSON.stringify(data));
+    localStorage.setItem('pokemonAppData', JSON.stringify(data));
   }, [data]);
 
   const handleChange = (e) => {
@@ -54,6 +53,10 @@ const _InputTable = ({ showLogin, setShowLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!inputs.pokemon || !inputs.number || !inputs.height || !inputs.weight) {
+      alert("Please fill out all fields.");
+      return;
+    }
     if (editIndex !== null) {
       setData((prevData) =>
         prevData.map((item, index) => (index === editIndex ? inputs : item))
@@ -108,9 +111,13 @@ const _InputTable = ({ showLogin, setShowLogin }) => {
     );
   });
 
+  const types = [
+    'Fire', 'Water', 'Grass', 'Electric', 'Ice',
+    'Flying', 'Psychic', 'Ghost', 'Fighting', 'Poison'
+  ];
+
   return (
     <div className="container">
-      {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
       <input
         type="text"
         className="search-bar"
@@ -158,18 +165,7 @@ const _InputTable = ({ showLogin, setShowLogin }) => {
         <div className="checkbox-container">
           <label>Type:</label>
           <div>
-            {[
-              'Fire',
-              'Water',
-              'Grass',
-              'Electric',
-              'Ice',
-              'Flying',
-              'Psychic',
-              'Ghost',
-              'Fighting',
-              'Poison'
-            ].map((type) => (
+            {types.map((type) => (
               <label key={type}>
                 <input
                   type="checkbox"
