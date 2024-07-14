@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
+const http = require("http-server");
+
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -62,14 +64,8 @@ app.post('/login', async (req, res) => {
 
 app.get("/", (req,res) => res.send("API Working!"))
 // Start the server
-app.listen(PORT, () => {
+
+const server = http.createServer(app);
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
-
-
-
-
-
-

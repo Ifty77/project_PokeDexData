@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Auth.css';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    try 
-   {
+    try {
       await axios.post(`${process.env.REACT_APP_BACKEND_URL}/signup`, { email, password });
-      history.push('/login');
-    }catch (error) {
+      navigate('/login');
+    } catch (error) {
       alert('Signup failed');
     }
   };
@@ -40,17 +39,10 @@ const Signup = () => {
         <button type="submit">Signup</button>
       </form>
       <p>
-        Already have an Account? <a href="/login">Login</a>
+        Already have an account? <a href="/login">Login</a>
       </p>
     </div>
   );
 };
 
 export default Signup;
-
-
-
-
-
-
-

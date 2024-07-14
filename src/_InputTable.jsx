@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './_InputTable.css';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const InputTable = () => {
   const [inputs, setInputs] = useState({
@@ -29,15 +29,15 @@ const InputTable = () => {
 
   const [editIndex, setEditIndex] = useState(null);
   const [search, setSearch] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate(); //useNavigate
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      history.push('/login');
+      navigate('/login');
     }
     localStorage.setItem('pokemonData', JSON.stringify(data));
-  }, [data, history]);
+  }, [data, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -230,4 +230,3 @@ const InputTable = () => {
 };
 
 export default InputTable;
-

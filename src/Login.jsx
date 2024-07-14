@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Auth.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -14,7 +14,7 @@ const Login = () => {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, { email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        history.push('/input-table');
+        navigate('/input-table');
       }
     } catch (error) {
       alert('Login failed');
@@ -49,13 +49,3 @@ const Login = () => {
 };
 
 export default Login;
-
-///dasdvdvavadvasdvawdawdfasdvasdvbasdvasdbvasdvasdvavavavasvsavsavs
-//gaevubsajdvbbsauvia
-//iuvbgsagvusgvs
-
-
-
-
-
-
