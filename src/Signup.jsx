@@ -40,13 +40,14 @@ const Signup = () => {
         <button type="submit">Signup</button>
       </form>
       <p>
-        Already have an account? <a href="/login">Login</a>
+        Already have an Account? <a href="/login">Login</a>
       </p>
     </div>
   );
 };
 
 export default Signup;
+
 
 
 
