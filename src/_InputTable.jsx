@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './_InputTable.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const InputTable = () => {
   const [inputs, setInputs] = useState({
@@ -29,7 +29,7 @@ const InputTable = () => {
 
   const [editIndex, setEditIndex] = useState(null);
   const [search, setSearch] = useState('');
-  const navigate = useNavigate(); //useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -131,6 +131,7 @@ const InputTable = () => {
             placeholder="Pokemon"
             value={inputs.pokemon}
             onChange={handleChange}
+            required
           />
           <input
             type="text"
@@ -139,6 +140,7 @@ const InputTable = () => {
             placeholder="Number"
             value={inputs.number}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-row">
@@ -149,6 +151,7 @@ const InputTable = () => {
             placeholder="Height"
             value={inputs.height}
             onChange={handleChange}
+            required
           />
           <input
             type="text"
@@ -157,6 +160,7 @@ const InputTable = () => {
             placeholder="Weight"
             value={inputs.weight}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="checkbox-container">
@@ -213,12 +217,21 @@ const InputTable = () => {
                 <td>{entry.height}</td>
                 <td>{entry.weight}</td>
                 <td className="actions">
-                  <button className="btn btn-secondary btn-sm" onClick={() => handleEdit(index)}>
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => handleEdit(index)}
+                  >
                     Edit
                   </button>
-                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(index)}>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(index)}
+                  >
                     Delete
                   </button>
+                  <Link to={`/details/${index}`}>
+                    <button className="btn btn-info btn-sm">View Details</button>
+                  </Link>
                 </td>
               </tr>
             ))}
