@@ -4,7 +4,7 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const url = 'http://localhost:3000'; // Replace with your actual API URL
+  const url = 'https://project-poke-dex-data-frontend.vercel.app/login'; // Replace with your actual API URL
 
   return (
     <CartContext.Provider value={{ token, setToken, url }}>
